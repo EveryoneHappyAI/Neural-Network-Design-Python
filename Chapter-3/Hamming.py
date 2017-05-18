@@ -41,37 +41,45 @@ print(a1)
 print(RecurrentPoslin(W2,a1,1))
 # 以上为书中实例、
 
+#===========================================
 # 以下为Hamming网络的封装实现
 #===========================================
 class HammingNN:
-    __W1 = nplib.array    
-    __W2 = nplib.array([[1,-0.5],[-0.5,1]])
-    __recurTimes = 1
+    __W1 = nplib.array([])
+    __W2 = nplib.array([[1,-0.5], [-0.5,1]], dtype=nplib.float)
+    __recurTimes = 100
     __b1 = nplib.array
     
-    def __init__(self, weight1, weight2):
+    def __init__(self, weight1):
         self.__W1 = weight1
-        self.__W2 = weight2
-        self.__b1 = nplib.array([weight1[0,:].size, weight1[0,:].size])
+        self.__b1 = nplib.array([weight1[0,:].size, weight1[0,:].size], dtype=nplib.float)
         
     def __preNerual(self, p, out=None):
         out = self.__W1.dot(p) + self.__b1
+        print("__preNerual " , out)
         return out
         
     def __recurrentPoslin(self, a0, times):
-        aNext = self.__W2.dot(a0);
-        nplib.clip(aNext, 0, 100, out=aNext)
+        aNext = self.__W2.dot(a0)
+        nplib.clip(aNext, 0.0, 100.0, out=aNext)
+        
+        print("__recurrentPoslin", aNext, " ", times )
+        
         times-=1;
-        if times>0:
-            aNext = RecurrentPoslin(aNext,times)
+        #if times>0:
+        if (a0-aNext).dot(nplib.array([1,1])) != 0 and times>0 :
+            aNext = self.__recurrentPoslin(aNext,times)
          
         return aNext
     #---------------------------------Neural Response    
     def response(self, p):
-        return self.__recurrentPoslin(self.__preNerual(p), self.__recurTimes)      
+        result = self.__recurrentPoslin(self.__preNerual(p), self.__recurTimes).dot([1,-1])
+        
+        return result/abs(result)
 #===========================================
     
-xx = HammingNN(nplib.array([[1,-1,-1],[1,1,-1]]), nplib.array([[1,-0.5],[-0.5,1]]));
-print("[-1,1,-1] Hamming response:", xx.response([-1,1,-1]) )
+xx = HammingNN(nplib.array([[-1,1,-1],[-1,-1,1]], dtype=nplib.float));
+print("[-1,1,-1] Hamming response:", xx.response(nplib.array([1,-1,1], dtype=nplib.float) ) )
+print("该网络对于和两个标准模式几乎等距离的向量，无法判断")
 
 
