@@ -42,5 +42,36 @@ print(RecurrentPoslin(W2,a1,1))
 # 以上为书中实例、
 
 # 以下为Hamming网络的封装实现
+#===========================================
+class HammingNN:
+    __W1 = nplib.array    
+    __W2 = nplib.array([[1,-0.5],[-0.5,1]])
+    __recurTimes = 1
+    __b1 = nplib.array
+    
+    def __init__(self, weight1, weight2):
+        self.__W1 = weight1
+        self.__W2 = weight2
+        self.__b1 = nplib.array([weight1[0,:].size, weight1[0,:].size])
+        
+    def __preNerual(self, p, out=None):
+        out = self.__W1.dot(p) + self.__b1
+        return out
+        
+    def __recurrentPoslin(self, a0, times):
+        aNext = self.__W2.dot(a0);
+        nplib.clip(aNext, 0, 100, out=aNext)
+        times-=1;
+        if times>0:
+            aNext = RecurrentPoslin(aNext,times)
+         
+        return aNext
+    #---------------------------------Neural Response    
+    def response(self, p):
+        return self.__recurrentPoslin(self.__preNerual(p), self.__recurTimes)      
+#===========================================
+    
+xx = HammingNN(nplib.array([[1,-1,-1],[1,1,-1]]), nplib.array([[1,-0.5],[-0.5,1]]));
+print("[-1,1,-1] Hamming response:", xx.response([-1,1,-1]) )
 
 
