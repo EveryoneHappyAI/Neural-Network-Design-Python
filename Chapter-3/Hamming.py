@@ -12,35 +12,6 @@ Created on Thu May 18 01:13:49 2017
 
 import numpy as nplib
 
-#输入
-p=nplib.array([-1,-1,-1])
-
-#前馈
-#权值
-W1=nplib.array([[1,-1,-1],[1,1,-1]])
-#偏置
-b1=nplib.array([3,3])
-
-a1=W1.dot(p)+b1
-           
-#递归反馈层 
-W2=nplib.array([[1,-0.5],[-0.5,1]])
-
-#递归Poslin函数（人工控制递归次数times）
-def RecurrentPoslin(w,a,times=1):    
-    aNext = w.dot(a);
-    nplib.clip(aNext, 0, 100, out=aNext)
-    times-=1;
-    if times>0:
-        aNext = RecurrentPoslin(w,aNext,times)
-            
-    return aNext
-
-print(W1.dot(p))
-print(a1)
-print(RecurrentPoslin(W2,a1,1))
-# 以上为书中实例、
-
 #===========================================
 # 以下为Hamming网络的封装实现
 #===========================================
