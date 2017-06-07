@@ -61,8 +61,9 @@ class PerceptronRuleNN:
         
         print("*****", self.__w)
         
-        for i in pArray:
-            t = self.__hardlim((self.__W.dot(pArray)+self.__b))
+        
+        for i in range(pArray.shape[0]):
+            t = self.__hardlim((self.__W.dot(pArray[i]) + self.__b))
             print(" =======  ", self.__w, " ======== ", i, "  =============  " , t)
         
         
@@ -91,6 +92,4 @@ print(" nbytes: ", aa.nbytes)
 print(" ndim: ", aa.ndim)
 
 plt.figure()
-plt.plot(aa.imag[0])
-from skimage import io
-io.imshow(aa.imag[1])
+#plt.plot(aa.imag[0])
