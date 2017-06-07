@@ -17,10 +17,10 @@ import matplotlib.pyplot as plt
 # 以下为感知机学习规则的封装实现
 #===========================================
 class PerceptronRuleNN:
-    __W = nplib.array([1,1,1])
+    __W = nplib.array([1,1])
     __WLast = nplib.array([])
     
-    __b = 0 #nplib.array
+    __b = 0.5 #nplib.array
     __bInit = nplib.array
     
     #def __init__(self):
@@ -63,17 +63,20 @@ class PerceptronRuleNN:
         
         
         for i in range(pArray.shape[0]):
-            t = self.__hardlim((self.__W.dot(pArray[i]) + self.__b))
-            print(" =======  ", self.__w, " ======== ", i, "  =============  " , t)
+            a = self.__hardlim((self.__W.dot(pArray[i]) + self.__b))
+            print(" =======  ", self.__w, " ======== ", i, "  =============  " , a)
+            e = tArray[i]-a
+            self.__w = self.__w + e*pArray[i]
+            self.__b = self.__b + e
         
         
     
 #===========================================
     
 xx = PerceptronRuleNN();
-print("[-1,1,-1] Hamming response:", xx.response(nplib.array([1,-1,1], dtype=nplib.float) ) )
+print("[-1,1,-1] Hamming response:", xx.response(nplib.array([1,-1], dtype=nplib.float) ) )
 
-aa = nplib.array([[1,-1,1],[2,-1,2]])#, nplib.zeros((2,3)), nplib.zeros((2,3)), nplib.zeros((2,3))], dtype=nplib.float);
+aa = nplib.array([[1,-1], [2,-1]])#, nplib.zeros((2,3)), nplib.zeros((2,3)), nplib.zeros((2,3))], dtype=nplib.float);
 
 xx.train(aa,[1,1])
 
@@ -91,5 +94,6 @@ print(" itemsize: ", aa.itemsize)
 print(" nbytes: ", aa.nbytes)
 print(" ndim: ", aa.ndim)
 
-plt.figure()
-#plt.plot(aa.imag[0])
+#plt.figure()
+plt.
+ #plot(aa)
