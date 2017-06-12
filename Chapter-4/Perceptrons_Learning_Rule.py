@@ -4,6 +4,7 @@
 4.2.3 感知机学习规则
 基本的感知机hardlim 或者 hardlims函数的感知机
 通过训练，寻找合适的权值以及偏置值
+该网络可以完成简单的二值 学习、以及分类
 
 Created on Fri May 19 13:54:38 2017
 
@@ -72,12 +73,16 @@ class PerceptronRuleNN:
         
     
 #===========================================
-    
-xx = PerceptronRuleNN();
-print("[-1,1,-1] Hamming response:", xx.response(nplib.array([1,-1], dtype=nplib.float) ) )
+ 
 
+#============测试过程   
+
+xx = PerceptronRuleNN();
+
+#训练数据 aa
 aa = nplib.array([[1,-1], [2,-1]])#, nplib.zeros((2,3)), nplib.zeros((2,3)), nplib.zeros((2,3))], dtype=nplib.float);
 
+#训练
 xx.train(aa,[1,1])
 
 #print("---- ", aa, aa.shape, aa.dtype, aa.data, aa.flags, aa.flat, aa.imag, aa.real, aa.size, aa.itemsize, aa.nbytes, aa.ndim )
@@ -95,5 +100,7 @@ print(" nbytes: ", aa.nbytes)
 print(" ndim: ", aa.ndim)
 
 #plt.figure()
-plt.
- #plot(aa)
+plt.plot(aa[:,0],aa[0,:],'o')
+#plot(aa)
+ 
+#实际响应 xx.response()
