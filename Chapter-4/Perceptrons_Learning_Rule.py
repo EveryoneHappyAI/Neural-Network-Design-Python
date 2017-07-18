@@ -52,17 +52,17 @@ class PerceptronRuleNN:
         return self.__hardlim( (self.__W.dot(p)+self.__b))
     
     #---------------------------------Neural Tranning
-    # pArray 输入队列， tArray正确结果队列
+    # pArray 训练数据输入队列， tArray正确结果队列
     def train(self, pArray, tArray):
         if(pArray.ndim<=1):
             print("Trainning data not correct!")
             return
-        
+        #initialize weight in range (0,1]
         self.__w = nplib.random.ranf(pArray[0].shape)
         
         print("*****", self.__w)
         
-        
+        #adjust the weight and b. By the right result
         for i in range(pArray.shape[0]):
             a = self.__hardlim((self.__W.dot(pArray[i]) + self.__b))
             print(" =======  ", self.__w, " ======== ", i, "  =============  " , a)
@@ -70,7 +70,7 @@ class PerceptronRuleNN:
             self.__w = self.__w + e*pArray[i]
             self.__b = self.__b + e
         
-        
+        print("Weight and b after trainning... W: ", self.__w, "  b: ", self.__b)
     
 #===========================================
  
@@ -102,5 +102,6 @@ print(" ndim: ", aa.ndim)
 #plt.figure()
 plt.plot(aa[:,0],aa[0,:],'o')
 #plot(aa)
- 
+help(plt)
+
 #实际响应 xx.response()
