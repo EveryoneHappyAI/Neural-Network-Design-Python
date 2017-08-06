@@ -63,14 +63,15 @@ class HebbSelfAssociatNN:
         #initialize weight in range (0,1]        
         
         p = pArray[0]
-        self.__W = p.dot(p.T)
+        p = p.reshape((120))
+        self.__W = nplib.zeros((120, 120), dtype = nplib.float)
         print("*****", self.__W)
-        self.__W = self.__W-self.__W
-        print("*****", self.__W)
+        
         #adjust the weight and b. By the right result
         for i in range(pArray.shape[0]):
             p = pArray[i]
-            self.__W = self.__W + p.dot(p.T)
+            p = p.reshape((120))
+            self.__W = self.__W + p.T.dot(p)
             print(" =======  ", self.__W, " ======== ", i, "  =============  " , p)
         
         print("Weight and b after trainning... W: ", self.__W)
@@ -82,7 +83,7 @@ nn = HebbSelfAssociatNN()
 #arr = nplib.random.randn(10,6,5)
 
 
-arr = nplib.arange(360).reshape(3,12,10)
+arr = nplib.zeros((3,12,10), dtype = nplib.int16)
 print(arr)
 
 for i in range(1,4):
@@ -93,18 +94,26 @@ for i in range(1,4):
     
     cv2.imshow("testWindow", img)
     cv2.waitKey(-1)
+    print(img)
     print(arr[i-1])
     
 nn.hardlim(arr)
 
 nn.train(arr)
-outImg = nn.response(arr[0])
 
+testimg = cv2.imread('./test.bmp', 0)
+cv2.imshow("testWindow", testimg)
+cv2.waitKey(-1)
+
+testimg = testimg.reshape((120))
+
+#nn.hardlim(testimg)
+outImg = nn.response(testimg)
 outImg = 255 * outImg
 outImg[outImg<0] = 0
 print(outImg)
 
-
-cv2.imshow("testWindow", arr[1])
+outImg = outImg.reshape(12,10)
+cv2.imshow("testWindow", outImg)
 cv2.waitKey(-1)
 cv2.destroyAllWindows()
